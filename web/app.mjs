@@ -166,6 +166,13 @@ render();
 addProject.disabled = true;
 try {
   state = await api.read();
+  if (state.storage === 'cloud') {
+    const label = 'Dữ liệu lưu trên web';
+    document.querySelector('#storageStatus').textContent = label;
+    const indicator = document.querySelector('.local-dot');
+    indicator.title = label;
+    indicator.setAttribute('aria-label', label);
+  }
   addProject.disabled = false;
   render();
 } catch (error) {

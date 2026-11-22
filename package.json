@@ -3,6 +3,10 @@
   "private": true,
   "scripts": {
     "start": "node server/main.mjs",
+    "build:hosted": "node scripts/build-hosted.mjs",
     "test": "node --test"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   }
 }

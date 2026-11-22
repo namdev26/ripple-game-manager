@@ -2,20 +2,12 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'node:path';
 import { WorkspaceStore } from './workspace-store.mjs';
+import { responseHeaders, types } from './web-response.mjs';
 
 const root = new URL('../web/', import.meta.url);
-const types = {
-  '.html': 'text/html', '.css': 'text/css', '.mjs': 'text/javascript', '.woff2': 'font/woff2',
-  '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml'
-};
-const policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
 
 function send(response, status, body, type = 'application/json') {
-  response.writeHead(status, {
-    'Content-Type': `${type}${type.startsWith('text/') || type === 'application/json' ? '; charset=utf-8' : ''}`,
-    'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': policy,
-    'Cross-Origin-Resource-Policy': 'same-origin'
-  });
+  response.writeHead(status, responseHeaders(type));
   response.end(type === 'application/json' ? JSON.stringify(body) : body);
 }
 
