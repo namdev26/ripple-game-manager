@@ -4,7 +4,7 @@ Dashboard tiếng Việt để quản lý các dự án game cá nhân, gồm th
 
 ## Mở trên web
 
-Mở [Ripple Workspace](https://ripple-game-manager.funnyblanket32.chatgpt.site) bằng tài khoản ChatGPT sở hữu site. Dữ liệu của bản web được lưu riêng theo tài khoản và có thể truy cập từ các thiết bị khác bằng cùng tài khoản.
+Mở [Ripple Workspace](https://namdev26.github.io/ripple-game-manager/) bằng tài khoản ChatGPT sở hữu site. GitHub Pages chuyển tới dashboard trên Sites, nơi dữ liệu được lưu riêng theo tài khoản và có thể truy cập từ các thiết bị khác bằng cùng tài khoản.
 
 Dùng **Sao lưu** để xuất JSON từ bản trên máy rồi nhập vào bản web khi cần chuyển dữ liệu. `npm ci` và `npm run build:hosted` tạo gói Worker từ mã nguồn và asset trong repo.
 
