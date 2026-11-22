@@ -23,6 +23,8 @@ export function saveRecord(projects, context, data) {
     const item = { id: project?.id ?? id(), name, status: field(data, 'status'), color: field(data, 'color'),
       type: field(data, 'type'), description: field(data, 'description'), fields, demo: false,
       customFields: customFields.filter(item => item.label), members: project?.members ?? [], tasks: project?.tasks ?? [] };
+    const artwork = field(data, 'artwork');
+    if (artwork) item.artwork = artwork;
     return { projects: project ? replace(projects, item) : [item, ...projects], target: item.id };
   }
   const target = project?.id ?? field(data, 'project');

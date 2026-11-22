@@ -1,4 +1,4 @@
-import { colors, statuses } from '../web/catalog.mjs';
+import { artworks, colors, statuses } from '../web/catalog.mjs';
 
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const text = value => typeof value === 'string';
@@ -13,6 +13,7 @@ export function validProjects(projects) {
   return identified(projects, project =>
     required(project.name) && text(project.type) && text(project.description) &&
     text(project.status) && Object.hasOwn(statuses, project.status) && text(project.color) && Object.hasOwn(colors, project.color) &&
+    (project.artwork === undefined || (text(project.artwork) && Object.hasOwn(artworks, project.artwork))) &&
     isObject(project.fields) && Object.values(project.fields).every(text) &&
     (project.demo === undefined || typeof project.demo === 'boolean') &&
     identified(project.customFields, field => required(field.label) && text(field.value)) &&

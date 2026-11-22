@@ -53,3 +53,12 @@ test('invalid imports and foreign origins preserve saved data', async t => {
   assert.equal((await app.save(1, [], 'https://example.com')).status, 403);
   assert.deepEqual((await app.read()).projects, [project]);
 });
+
+test('project artwork is optional and accepts only bundled artwork choices', async t => {
+  const app = await fixture(t);
+  const illustrated = { ...project, artwork: 'snake-out' };
+  assert.equal((await app.save(0, [illustrated])).status, 200);
+  assert.equal((await app.save(1, [{ ...project, artwork: 'missing' }])).status, 400);
+  assert.equal((await app.read()).projects[0].artwork, 'snake-out');
+  assert.equal((await app.save(1, [project])).status, 200);
+});

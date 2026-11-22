@@ -1,4 +1,4 @@
-import { colors, fieldGroups, statuses } from './catalog.mjs';
+import { artworks, colors, fieldGroups, statuses } from './catalog.mjs';
 import { action, escape, icon } from './ui.mjs';
 
 const input = (name, label, value = '', props = '') => `<label class="form-field"><span>${escape(label)}</span><input name="${name}" value="${escape(value)}" ${props}></label>`;
@@ -13,6 +13,7 @@ function projectForm(project = {}) {
   return `<div class="form-grid">${input('name', 'Tên game', project.name, 'required maxlength="120"')}${input('type', 'Thể loại', project.type, 'placeholder="Ví dụ Puzzle" maxlength="80"')}
     ${select('status', 'Trạng thái', Object.entries(statuses).map(([key, label]) => option(key, label, project.status ?? 'planning')).join(''))}
     ${select('color', 'Màu nhận diện', Object.entries(colors).map(([key, label]) => option(key, label, project.color ?? 'mint')).join(''))}
+    ${select('artwork', 'Ảnh bìa', option('', 'Biểu tượng theo màu nhận diện', project.artwork ?? '') + Object.entries(artworks).map(([key, artwork]) => option(key, artwork.title, project.artwork)).join(''))}
     <label class="form-field full"><span>Mô tả / ghi chú</span><textarea name="description" rows="3">${escape(project.description)}</textarea></label></div>
     ${fieldGroups.map(group => `<details class="form-group" ${project.id ? 'open' : ''}><summary>${icon(group.icon)}${group.title}${icon('caret-down')}</summary>
       <div class="form-grid">${group.fields.map(([key, label]) => input(`field-${key}`, label, project.fields?.[key])).join('')}</div></details>`).join('')}

@@ -1,4 +1,5 @@
-import { covers, statuses } from './catalog.mjs';
+import { statuses } from './catalog.mjs';
+import { projectVisual } from './project-visual.mjs';
 import { action, empty, encode, escape, icon, initials } from './ui.mjs';
 
 function searchText(value) {
@@ -21,7 +22,7 @@ export function projectCard(project) {
   const done = tasks.filter(task => task.done).length;
   const progress = tasks.length ? Math.round(100 * done / tasks.length) : 0;
   return `<a class="project-card panel" href="#project/${encode(id)}">
-    <div class="card-top"><span class="project-icon theme-${color}">${icon(covers[color])}</span>${statusBadge(status)}</div>
+    <div class="card-top">${projectVisual(project)}${statusBadge(status)}</div>
     <div class="card-copy"><h3>${escape(name)}</h3><p>${escape(type || 'Dự án game')}${description ? ` <span>·</span> ${escape(description)}` : ''}</p></div>
     <div class="card-progress"><span>Tiến độ</span><strong>${done}/${tasks.length} việc</strong></div>
     <div class="progress-bar theme-${color}" role="progressbar" aria-label="Tiến độ ${escape(name)}" aria-valuenow="${progress}"><span style="width:${progress}%"></span></div>

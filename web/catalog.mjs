@@ -4,6 +4,9 @@ export const statuses = {
 
 export const colors = { mint: 'Xanh lá', lavender: 'Tím', peach: 'Cam đào', blue: 'Xanh dương', yellow: 'Vàng' };
 export const covers = { mint: 'cat', lavender: 'spiral', peach: 'cooking-pot', blue: 'puzzle-piece', yellow: 'game-controller' };
+export const artworks = {
+  'snake-out': { title: 'Snake Out: Escape Puzzle', src: '/assets/games/snake-out/feature.jpg' }
+};
 
 export const fieldGroups = [
   { title: 'Mã nguồn & tài liệu', icon: 'github-logo', fields: [

@@ -19,12 +19,10 @@ export const demo = { projects: [
       task('a3', 'Hoàn thiện bộ biểu cảm mèo', 'demo-linh', true), task('a4', 'Cân bằng 10 level đầu', 'demo-mai', false, dateAfter(2)),
       task('a5', 'Kiểm tra sự kiện Firebase', 'demo-minh', false, dateAfter(4))]
   }),
-  example('demo-snake', 'Snake Trails', 'testing', 'lavender', 'Logic Puzzle', 'Mở đường cho từng chú rắn trong mê cung.', {
-    fields: { firebase: 'snake-trails-demo', package: 'com.example.snaketrails', version: '1.0.0-rc.2', keystore: 'snake-trails.jks' },
-    members: [person('demo-minh', 'Minh Quân', 'Unity Developer'), person('demo-thu', 'Thu Hà', 'QA')],
-    tasks: [task('b1', 'Kiểm thử luồng hướng dẫn', 'demo-thu', true), task('b2', 'Cập nhật icon ứng dụng', 'demo-minh', true),
-      task('b3', 'Kiểm tra frame rate', 'demo-thu', true), task('b4', 'Xác minh cấu hình build', 'demo-minh', true),
-      task('b5', 'Kiểm tra bản Android cuối', 'demo-thu', false, dateAfter(1))]
+  example('demo-snake', 'Snake Out: Escape Puzzle', 'released', 'lavender', 'Logic Puzzle', 'Tìm thứ tự để đưa các chú rắn ra khỏi mê cung.', {
+    artwork: 'snake-out',
+    fields: { package: 'com.ripplegame.snakeoutescapepuzzle', store: 'https://play.google.com/store/apps/details?id=com.ripplegame.snakeoutescapepuzzle' },
+    members: [], tasks: []
   }),
   example('demo-kitchen', 'Cozy Kitchen', 'planning', 'peach', 'Simulation', 'Mini game nấu ăn theo nhịp độ thư giãn.', {
     fields: {}, members: [person('demo-mai', 'Mai Anh', 'Game Designer'), person('demo-linh', 'Linh Chi', '2D Artist')],

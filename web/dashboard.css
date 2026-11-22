@@ -11,7 +11,8 @@
 .orbit-two { --orbit-width: 428px; }
 .orbit-three { --orbit-width: 325px; }
 .orbit-four { --orbit-width: 218px; border-color: #999064; }
-.hero-sticker { position: absolute; left: 58%; top: 55%; width: 94px; height: 94px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 24px; transform: translate(-50%, -50%) rotate(-13deg); background: var(--yellow); color: var(--ink); box-shadow: 5px 5px #aa934b; font-size: 3.1rem; }
+.hero-sticker { position: absolute; left: 58%; top: 55%; width: 100px; height: 132px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 17px; transform: translate(-50%, -50%) rotate(-11deg); background: var(--yellow); box-shadow: 5px 5px #aa934b; }
+.hero-sticker img { display: block; width: 70px; height: 103px; }
 .orbit-dot { position: absolute; left: 17%; top: 72%; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); }
 .orbit-star { position: absolute; left: 80%; top: 16%; font-size: 1.8rem; line-height: 1; color: var(--yellow); }
 .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin: 19px 0 34px; }
@@ -33,6 +34,7 @@
 .card-top, .card-bottom, .card-progress { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .card-top { align-items: start; }
 .project-icon { width: 50px; height: 50px; border-radius: 12px; font-size: 1.55rem; }
+.project-artwork { display: block; flex: none; width: 115px; max-width: 48%; height: auto; aspect-ratio: 1024 / 500; object-fit: cover; border: var(--border); border-radius: 10px; background: var(--ink); }
 .status { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #d8d5ca; border-radius: 999px; padding: 3px 8px; background: #f0eee8; color: #524c40; font-size: .7rem; font-weight: 700; white-space: nowrap; }
 .status i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .status-active { background: #edf5e3; border-color: #ccddb9; color: #395723; }

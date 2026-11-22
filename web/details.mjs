@@ -1,6 +1,7 @@
-import { covers, fieldGroups } from './catalog.mjs';
+import { fieldGroups } from './catalog.mjs';
 import { membersView, tasksView } from './collections.mjs';
 import { statusBadge } from './project-list.mjs';
+import { projectVisual } from './project-visual.mjs';
 import { action, encode, escape, externalUrl, icon } from './ui.mjs';
 
 function fieldRow(label, value) {
@@ -27,7 +28,7 @@ export function details(project, tab) {
   const route = `#project/${encode(project.id)}`;
   const tabs = { info: 'Thông tin', tasks: 'Công việc', team: 'Thành viên' };
   return `<a class="back-link" href="#projects">${icon('arrow-left')} Tất cả dự án</a>
-    <header class="page-heading detail-heading"><div class="detail-identity"><span class="project-icon theme-${project.color}">${icon(covers[project.color])}</span><div>
+    <header class="page-heading detail-heading"><div class="detail-identity">${projectVisual(project)}<div>
       <div class="detail-title"><h1>${escape(project.name)}</h1>${statusBadge(project.status)}</div>
       <p>${escape([project.type, project.description].filter(Boolean).join(' · '))}</p></div></div>
       ${action('edit-project', 'Sửa dự án', 'pencil-simple', { kind: 'primary', payload: project.id })}</header>

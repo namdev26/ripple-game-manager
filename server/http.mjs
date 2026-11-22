@@ -4,7 +4,10 @@ import { extname } from 'node:path';
 import { WorkspaceStore } from './workspace-store.mjs';
 
 const root = new URL('../web/', import.meta.url);
-const types = { '.html': 'text/html', '.css': 'text/css', '.mjs': 'text/javascript', '.woff2': 'font/woff2', '.png': 'image/png' };
+const types = {
+  '.html': 'text/html', '.css': 'text/css', '.mjs': 'text/javascript', '.woff2': 'font/woff2',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml'
+};
 const policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'";
 
 function send(response, status, body, type = 'application/json') {

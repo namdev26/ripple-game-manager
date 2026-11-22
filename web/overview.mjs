@@ -21,7 +21,7 @@ export function overview(projects) {
   const date = new Intl.DateTimeFormat('vi-VN', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric' }).format(new Date());
   return `<section class="hero" aria-labelledby="overviewHeading">
     <div class="hero-copy"><span class="hero-date">${icon('calendar-blank')}${escape(date)}</span><h1 id="overviewHeading">Quản lý dự án<span>.</span></h1><p>Một nơi cho mọi game bạn đang làm.</p></div>
-    <div class="hero-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="orbit orbit-four"></div><b class="orbit-dot"></b><b class="orbit-star">✦</b><div class="hero-sticker">${icon('game-controller')}</div></div>
+    <div class="hero-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="orbit orbit-four"></div><b class="orbit-dot"></b><b class="orbit-star">✦</b><div class="hero-sticker"><img src="/assets/brand/logo.svg" alt="" width="70" height="103"></div></div>
   </section>
   <section class="stats" aria-label="Số liệu workspace">
     ${stat('folder-simple', projects.length, 'Tổng dự án', 'yellow', '#projects')}

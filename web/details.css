@@ -3,6 +3,7 @@
 .detail-identity { display: flex; gap: 15px; align-items: center; min-width: 0; }
 .detail-identity > div { min-width: 0; }
 .detail-identity .project-icon { width: 63px; height: 63px; font-size: 1.9rem; }
+.detail-identity .project-artwork { width: 132px; }
 .detail-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 13px; }
 .detail-title h1 { overflow-wrap: anywhere; }
 .detail-identity p { overflow-wrap: anywhere; white-space: pre-wrap; }
@@ -68,6 +69,7 @@ dialog fieldset { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; m
 @media (max-width: 480px) {
   .detail-heading { align-items: start; flex-direction: column; }
   .detail-identity .project-icon { width: 48px; height: 48px; }
+  .detail-identity .project-artwork { width: 88px; }
   .detail-title h1 { font-size: 2rem; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
   .record { padding: 10px 8px; gap: 7px; }
