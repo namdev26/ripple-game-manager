@@ -1,55 +1,56 @@
-import { membersView, tasksView } from './collections.mjs';
-import { backups, details } from './details.mjs';
+import { backups } from './backups.mjs';
+import { statuses } from './catalog.mjs';
+import { details } from './details.mjs';
 import { Editor } from './editor.mjs';
-import { overview } from './overview.mjs';
-import { deleteRecord, saveRecord, toggleTask } from './project-edits.mjs';
+import { saveProject } from './project-edits.mjs';
 import { projectList } from './project-list.mjs';
-import { empty, encode, icon } from './ui.mjs';
+import { empty, icon } from './ui.mjs';
 import { WorkspaceApi } from './workspace-api.mjs';
 
-const pages = {
-  overview: ['Tổng quan', 'squares-four'], projects: ['Dự án', 'folder-simple'], tasks: ['Công việc', 'list-checks'],
-  team: ['Thành viên', 'users'], backup: ['Sao lưu', 'database']
-};
 const content = document.querySelector('#content');
+const registryHeader = document.querySelector('#registryHeader');
 const search = document.querySelector('#search');
-const nav = document.querySelector('.nav');
+const filter = document.querySelector('#statusFilter');
+const navLinks = document.querySelectorAll('.nav a');
 const importFile = document.querySelector('#importFile');
 const notice = document.querySelector('#notice');
-const addProject = document.querySelector('#addProject');
 const api = new WorkspaceApi();
 let state;
 let saving = false;
 let toastTimeout;
 
+for (const [value, label] of Object.entries({ working: 'Đang làm / test', ...statuses })) filter.add(new Option(label, value));
+filter.parentElement.insertAdjacentHTML('beforeend', icon('caret-down'));
+
 function currentRoute() {
-  const [path, filter] = location.hash.slice(1).split('?');
-  const [candidate, rawId, tab] = path.split('/');
+  const [path, params] = location.hash.slice(1).split('?');
+  const [candidate, rawId] = path.split('/');
   let projectId;
   try { projectId = decodeURIComponent(rawId ?? ''); } catch { projectId = ''; }
-  const page = candidate === 'project' || Object.hasOwn(pages, candidate) ? candidate : 'overview';
-  return { page, projectId, tab: ['tasks', 'team'].includes(tab) ? tab : 'info', status: new URLSearchParams(filter).get('status') ?? '' };
+  const page = ['backup', 'project'].includes(candidate) ? candidate : 'projects';
+  const status = new URLSearchParams(params).get('status');
+  return { page, projectId, status: status === 'working' || Object.hasOwn(statuses, status) ? status : '' };
 }
 
 function render() {
-  const { page, projectId, tab, status } = currentRoute();
+  const { page, projectId, status } = currentRoute();
   const selected = page === 'project' ? 'projects' : page;
-  nav.innerHTML = `<div class="nav-group">${Object.entries(pages).filter(([key]) => key !== 'backup').map(([key, [label, glyph]]) => navLink(key, label, glyph, selected)).join('')}</div>
-    <div class="nav-group nav-storage">${navLink('backup', ...pages.backup, selected)}</div>`;
-  document.querySelector('#topTitle').textContent = pages[selected][0];
+  for (const link of navLinks) {
+    if (link.dataset.page === selected) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+  registryHeader.hidden = !state || page !== 'projects';
   if (!state) return;
   const { projects } = state;
-  const project = projects.find(item => item.id === projectId);
-  const views = {
-    overview: () => overview(projects), projects: () => projectList(projects, { query: search.value, status }),
-    tasks: () => tasksView(projects), team: () => membersView(projects), backup: () => backups(projects),
-    project: () => project ? details(project, tab) : empty('folder-simple', 'Không tìm thấy dự án', 'Dự án này có thể đã được xóa.', '<a class="button" href="#projects">Quay về danh sách</a>')
-  };
-  content.innerHTML = views[page]();
-}
-
-function navLink(key, label, glyph, selected) {
-  return `<a href="#${key}" ${key === selected ? 'aria-current="page"' : ''}>${icon(glyph)}<span>${label}</span></a>`;
+  if (page === 'projects') {
+    filter.value = status;
+    content.innerHTML = projectList(projects, { query: search.value, status });
+  } else if (page === 'backup') {
+    content.innerHTML = backups(projects);
+  } else {
+    const project = projects.find(item => item.id === projectId);
+    content.innerHTML = project ? details(project) : empty('folder-simple', 'Không tìm thấy dự án', 'Dự án này có thể đã được xóa.', '<a class="button" href="#projects">Quay về danh sách</a>');
+  }
 }
 
 function toast(message, error = false) {
@@ -72,15 +73,18 @@ async function persist(projects) {
   }
 }
 
-const editor = new Editor(document.querySelector('#editor'), async (context, data) => {
-  const result = saveRecord(state.projects, context, data);
-  await persist(result.projects);
-  if (context.kind === 'project' && !context.project) location.hash = `#project/${encode(result.target)}`;
+const editor = new Editor(document.querySelector('#editor'), async (project, data) => {
+  await persist(saveProject(state.projects, project, data));
+  if (!project) {
+    search.value = '';
+    location.hash = '#projects';
+    render();
+  }
   toast('Đã lưu thay đổi.');
-}, async context => {
-  await persist(deleteRecord(state.projects, context));
-  if (context.kind === 'project') location.hash = '#projects';
-  toast('Đã xóa.');
+}, async project => {
+  await persist(state.projects.filter(item => item.id !== project.id));
+  location.hash = '#projects';
+  toast('Đã xóa dự án.');
 });
 
 function download() {
@@ -95,15 +99,12 @@ function download() {
 }
 
 async function run(button) {
-  const { action, payload, record } = button.dataset;
+  const { action, payload } = button.dataset;
   const projects = state.projects;
-  const project = projects.find(item => item.id === payload);
-  if (action === 'new-project' || action === 'edit-project') editor.open({ kind: 'project', project });
-  if (action === 'edit-task') editor.open({ kind: 'task', project, projects, entry: project?.tasks.find(item => item.id === record) });
-  if (action === 'edit-member') editor.open({ kind: 'member', project, projects, entry: project?.members.find(item => item.id === record) });
-  if (action === 'toggle-task' && project) {
-    button.disabled = true;
-    try { await persist(toggleTask(projects, project, record)); } finally { button.disabled = false; }
+  if (action === 'new-project') editor.open();
+  if (action === 'edit-project') {
+    const project = projects.find(item => item.id === payload);
+    if (project) editor.open(project);
   }
   if (action === 'copy') {
     await navigator.clipboard.writeText(payload);
@@ -120,7 +121,7 @@ async function run(button) {
 document.addEventListener('click', event => {
   const button = event.target.closest('[data-action]');
   if (state && button && !button.closest('dialog')) run(button).catch(error => toast(error.message, true));
-  if (event.target.closest('a[href="#projects"]') && search.value) {
+  if (event.target.closest('.topbar a[href="#projects"]') && search.value) {
     search.value = '';
     render();
   }
@@ -142,20 +143,14 @@ importFile.addEventListener('change', async () => {
   }
 });
 
-search.addEventListener('input', () => {
-  if (currentRoute().page !== 'projects') location.hash = '#projects';
-  else render();
-});
-content.addEventListener('change', event => {
-  if (event.target.id === 'statusFilter') location.hash = event.target.value ? `#projects?status=${event.target.value}` : '#projects';
-});
+search.addEventListener('input', render);
+filter.addEventListener('change', () => { location.hash = filter.value ? `#projects?status=${filter.value}` : '#projects'; });
 window.addEventListener('hashchange', () => {
-  if (currentRoute().page !== 'projects') search.value = '';
   render();
   window.scrollTo(0, 0);
 });
 document.addEventListener('keydown', event => {
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k' && !document.querySelector('#editor').open) {
+  if (!registryHeader.hidden && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k' && !document.querySelector('#editor').open) {
     event.preventDefault();
     search.focus();
     search.select();
@@ -163,17 +158,9 @@ document.addEventListener('keydown', event => {
 });
 
 render();
-addProject.disabled = true;
 try {
   state = await api.read();
-  if (state.storage === 'cloud') {
-    const label = 'Dữ liệu lưu trên web';
-    document.querySelector('#storageStatus').textContent = label;
-    const indicator = document.querySelector('.local-dot');
-    indicator.title = label;
-    indicator.setAttribute('aria-label', label);
-  }
-  addProject.disabled = false;
+  if (state.storage === 'cloud') document.querySelector('#storageStatus').textContent = 'Dữ liệu lưu trên web';
   render();
 } catch (error) {
   content.innerHTML = empty('database', 'Không mở được workspace', error.message, '<a class="button" href="/">Tải lại trang</a>');

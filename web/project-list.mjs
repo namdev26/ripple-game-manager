@@ -1,6 +1,7 @@
-import { statuses } from './catalog.mjs';
+import { fieldGroups, statuses } from './catalog.mjs';
+import { fieldActions, filledFields } from './project-fields.mjs';
 import { projectVisual } from './project-visual.mjs';
-import { action, empty, encode, escape, icon, initials } from './ui.mjs';
+import { action, empty, encode, escape, externalUrl, icon } from './ui.mjs';
 
 function searchText(value) {
   return value.toLocaleLowerCase('vi').normalize('NFD').replace(/\p{M}/gu, '').replaceAll('đ', 'd');
@@ -8,40 +9,44 @@ function searchText(value) {
 
 export function matches(project, query) {
   const content = searchText([
-    project.name, project.type, project.description, ...Object.values(project.fields),
-    ...project.customFields.flatMap(field => [field.label, field.value]), ...project.members.map(member => member.name)
+    project.name, project.type, project.description, statuses[project.status], ...Object.values(project.fields),
+    ...project.customFields.flatMap(field => [field.label, field.value])
   ].join(' '));
   return searchText(query).trim().split(/\s+/).every(part => content.includes(part));
 }
 
 export const statusBadge = status => `<span class="status status-${status}"><i></i>${statuses[status]}</span>`;
-export const avatar = (name, index = 0) => `<span class="avatar avatar-${index % 4}" title="${escape(name)}">${escape(initials(name))}</span>`;
 
-export function projectCard(project) {
-  const { id, name, color, status, type, description, tasks, members } = project;
-  const done = tasks.filter(task => task.done).length;
-  const progress = tasks.length ? Math.round(100 * done / tasks.length) : 0;
-  return `<a class="project-card panel" href="#project/${encode(id)}">
-    <div class="card-top">${projectVisual(project)}${statusBadge(status)}</div>
-    <div class="card-copy"><h3>${escape(name)}</h3><p>${escape(type || 'Dự án game')}${description ? ` <span>·</span> ${escape(description)}` : ''}</p></div>
-    <div class="card-progress"><span>Tiến độ</span><strong>${done}/${tasks.length} việc</strong></div>
-    <div class="progress-bar theme-${color}" role="progressbar" aria-label="Tiến độ ${escape(name)}" aria-valuenow="${progress}"><span style="width:${progress}%"></span></div>
-    <div class="card-bottom"><div class="card-team"><span class="avatars">${members.slice(0, 3).map(member => avatar(member.name, member.name.length)).join('')}</span><span>${members.length} thành viên</span></div><span class="open-card">${icon('arrow-up-right')}</span></div>
-  </a>`;
+function sheetFields(fields, showLinks = false) {
+  if (!fields.length) return '<span class="missing" title="Chưa có dữ liệu" aria-label="Chưa có dữ liệu">—</span>';
+  return `<dl class="sheet-fields">${fields.map(field => {
+    const isLink = showLinks && externalUrl(field.value);
+    return `<div class="sheet-field"><div class="sheet-field-value">
+      <dt${isLink ? ` title="${escape(field.value)}"` : ''}>${escape(field.shortLabel ?? field.label)}</dt>
+      ${isLink ? `<dd title="${escape(field.value)}">${escape(isLink)}</dd>` : `<dd><code>${escape(field.value)}</code></dd>`}</div>${fieldActions(field, true)}</div>`;
+  }).join('')}</dl>`;
 }
 
-export function projectGrid(projects) {
-  return `<div class="project-grid">${projects.map(projectCard).join('')}</div>`;
+function projectRow(project) {
+  const { id, name, status, type, customFields } = project;
+  return `<tr>
+    <th scope="row" class="sheet-game"><a href="#project/${encode(id)}" class="game-link">${projectVisual(project)}<span>${escape(name)}${type ? `<small>${escape(type)}</small>` : ''}</span></a>
+      <div class="game-options">${statusBadge(status)}${action('edit-project', `Sửa ${name}`, 'pencil-simple', { compact: true, payload: id })}</div></th>
+    ${fieldGroups.map(group => `<td${group.key === 'links' ? ' class="sheet-links"' : ''}>${sheetFields(filledFields(project, group), group.key === 'links')}</td>`).join('')}
+    <td>${sheetFields(customFields.filter(field => field.value))}</td>
+  </tr>`;
 }
 
 export function projectList(projects, { query, status }) {
   const filter = status === 'working' ? ['active', 'testing'] : Object.hasOwn(statuses, status) ? [status] : [];
   const results = projects.filter(project => (!filter.length || filter.includes(project.status)) && matches(project, query));
-  return `<header class="page-heading"><div><h1>Dự án</h1><p>Thông tin phát hành, công việc và nhân sự theo từng game.</p></div></header>
-    <div class="list-toolbar"><p>${results.length} dự án</p>
-      <label class="select-wrap"><select id="statusFilter" aria-label="Lọc theo trạng thái">
-        <option value="">Tất cả trạng thái</option>${Object.entries({ working: 'Đang làm / test', ...statuses }).map(([value, label]) => `<option value="${value}" ${value === status ? 'selected' : ''}>${label}</option>`).join('')}
-      </select>${icon('caret-down')}</label>
-    </div>
-    ${results.length ? projectGrid(results) : empty('folder-simple', projects.length ? 'Không tìm thấy dự án' : 'Chưa có dự án', projects.length ? 'Thử từ khóa khác hoặc đổi trạng thái lọc.' : 'Thêm một game để bắt đầu lưu thông tin và công việc.', projects.length ? '' : action('new-project', 'Tạo dự án', 'plus', { kind: 'primary' }))}`;
+  const visible = results.length;
+  const count = visible === projects.length ? `${visible} dự án` : `${visible} / ${projects.length} dự án`;
+  return `<div class="sheet-meta"><p class="sheet-count" role="status">${count}</p>${visible ? '<span class="sheet-scroll-hint">Cuộn ngang để xem thêm</span>' : ''}</div>${visible ? `<div class="sheet-scroll" role="region" aria-label="Bảng thông tin dự án" tabindex="0">
+      <table class="project-sheet"><thead><tr><th scope="col">${icon('game-controller')}Game</th>
+        ${fieldGroups.map(group => `<th scope="col" class="column-${group.key}">${icon(group.icon)}${group.title}</th>`).join('')}
+        <th scope="col" class="column-custom">${icon('file-text')}Khác</th></tr></thead>
+        <tbody>${results.map(projectRow).join('')}</tbody></table>
+      </div>` : empty('folder-simple', projects.length ? 'Không tìm thấy dự án' : 'Chưa có dự án',
+    projects.length ? 'Thử từ khóa khác hoặc đổi trạng thái lọc.' : 'Thêm một game để lưu ID và các thông tin phát hành.')}`;
 }

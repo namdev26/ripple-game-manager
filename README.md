@@ -1,6 +1,6 @@
 # Ripple Workspace
 
-Dashboard tiếng Việt để quản lý các dự án game cá nhân, gồm thông tin phát hành, tài liệu, công việc và thành viên.
+Bảng tra cứu dự án game cá nhân. Mỗi dòng hiển thị ID ứng dụng, Firebase, AdMob, keystore, liên kết và trường bổ sung của một game.
 
 ## Mở trên web
 
