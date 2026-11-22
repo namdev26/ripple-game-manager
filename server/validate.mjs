@@ -1,4 +1,4 @@
-import { artworks, colors, statuses } from '../web/catalog.mjs';
+import { artworks, projectIcons, statuses } from '../web/catalog.mjs';
 
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const text = value => typeof value === 'string';
@@ -12,7 +12,7 @@ const validDate = value => value === '' || (text(value) && /^\d{4}-\d{2}-\d{2}$/
 export function validProjects(projects) {
   return identified(projects, project =>
     required(project.name) && text(project.type) && text(project.description) &&
-    text(project.status) && Object.hasOwn(statuses, project.status) && text(project.color) && Object.hasOwn(colors, project.color) &&
+    text(project.status) && Object.hasOwn(statuses, project.status) && text(project.color) && Object.hasOwn(projectIcons, project.color) &&
     (project.artwork === undefined || (text(project.artwork) && Object.hasOwn(artworks, project.artwork))) &&
     isObject(project.fields) && Object.values(project.fields).every(text) &&
     (project.demo === undefined || typeof project.demo === 'boolean') &&

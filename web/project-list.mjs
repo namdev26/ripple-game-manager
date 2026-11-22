@@ -15,7 +15,7 @@ export function matches(project, query) {
   return searchText(query).trim().split(/\s+/).every(part => content.includes(part));
 }
 
-export const statusBadge = status => `<span class="status status-${status}"><i></i>${statuses[status]}</span>`;
+export const statusBadge = status => `<span class="status">${statuses[status]}</span>`;
 
 function sheetFields(fields, showLinks = false) {
   if (!fields.length) return '<span class="missing" title="Chưa có dữ liệu" aria-label="Chưa có dữ liệu">—</span>';

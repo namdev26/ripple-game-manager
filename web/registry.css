@@ -4,40 +4,35 @@
 .registry-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .status-filter { flex: none; font-size: .875rem; }
 .select-wrap { position: relative; display: block; min-width: 0; }
-.select-wrap select { width: 100%; min-width: 0; min-height: 41px; background: var(--paper); color: var(--ink); border: 1px solid #d4d0c3; border-radius: 8px; appearance: none; padding: 8px 31px 8px 10px; cursor: pointer; }
+.select-wrap select { width: 100%; min-width: 0; min-height: 41px; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; appearance: none; padding: 8px 31px 8px 10px; cursor: pointer; }
 .select-wrap > .icon { position: absolute; top: 50%; right: 10px; pointer-events: none; transform: translateY(-50%); }
 .sheet-meta { display: flex; justify-content: space-between; gap: 8px; margin: 14px 0 8px; color: var(--muted); font-size: .82rem; }
 .sheet-count { font-weight: 700; }
 .sheet-scroll-hint { display: none; }
-.sheet-scroll { max-height: min(68vh, 820px); overflow: auto; border: var(--border); border-radius: 12px; box-shadow: var(--shadow); background: var(--paper); }
+.sheet-scroll { max-height: min(68vh, 820px); overflow: auto; border: var(--border); border-radius: 9px; background: var(--paper); }
 .project-sheet { width: 100%; min-width: 1280px; border-spacing: 0; table-layout: fixed; text-align: left; }
 .project-sheet :is(th, td) { min-width: 0; padding: 12px 10px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); vertical-align: top; }
 .project-sheet :is(th, td):last-child { border-right: 0; }
 .project-sheet tbody tr:last-child :is(th, td) { border-bottom: 0; }
-.project-sheet thead th { position: sticky; top: 0; z-index: 2; background: #efede4; border-bottom: 1px solid #c2bfb2; font-size: .88rem; font-weight: 900; white-space: nowrap; }
+.project-sheet thead th { position: sticky; top: 0; z-index: 2; background: var(--soft); border-bottom: 1px solid var(--line); font-size: .88rem; font-weight: 900; white-space: nowrap; }
 .project-sheet thead .icon { margin-right: 6px; vertical-align: -.15em; }
-.project-sheet thead th:first-child { z-index: 3; left: 0; width: 194px; background: var(--yellow); }
-.project-sheet thead .column-app { width: 204px; background: #e7edfc; }
-.project-sheet thead .column-firebase { width: 193px; background: #fcebdd; }
-.project-sheet thead .column-ads { width: 245px; background: #eeebfc; }
-.project-sheet thead .column-keystore { width: 185px; background: #e9f1e1; }
+.project-sheet thead th:first-child { z-index: 3; left: 0; width: 194px; }
+.project-sheet thead .column-app { width: 204px; }
+.project-sheet thead .column-firebase { width: 193px; }
+.project-sheet thead .column-ads { width: 245px; }
+.project-sheet thead .column-keystore { width: 185px; }
 .project-sheet thead .column-links { width: 156px; }
 .project-sheet tbody .sheet-game { position: sticky; left: 0; z-index: 1; background: var(--paper); font-size: .88rem; }
-.project-sheet tbody tr:nth-child(even) > :is(th, td) { background: #faf9f4; }
-.project-sheet tbody tr:hover > :is(th, td) { background: #f8f5e8; }
+.project-sheet tbody tr:nth-child(even) > :is(th, td) { background: #fafafa; }
+.project-sheet tbody tr:hover > :is(th, td) { background: var(--soft); }
 .game-link { display: flex; align-items: center; gap: 9px; min-width: 0; font-weight: 900; line-height: 1.35; }
 .game-link span { overflow-wrap: anywhere; }
 .game-link:hover > span { text-decoration: underline; text-underline-offset: 2px; }
 .game-link small { display: block; margin-top: 3px; color: var(--muted); font-size: .72rem; font-weight: 400; }
 .game-options { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 7px; }
-.project-icon, .section-icon { display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; border: var(--border); border-radius: 8px; background: var(--theme); color: var(--ink); font-size: 1.1rem; }
-.project-artwork { display: block; flex: none; width: 48px; max-width: 48%; height: auto; aspect-ratio: 1024 / 500; object-fit: cover; border: var(--border); border-radius: 6px; background: var(--ink); }
-.status { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #d8d5ca; border-radius: 999px; padding: 3px 7px; background: #f0eee8; color: #524c40; font-size: .69rem; font-weight: 700; white-space: nowrap; }
-.status i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.status-active { background: #edf5e3; border-color: #ccddb9; color: #395723; }
-.status-testing { background: #f1eafd; border-color: #ddd0f3; color: #62428a; }
-.status-planning { background: #fff2dd; border-color: #eddbb6; color: #78531f; }
-.status-released { background: #e9f2fe; border-color: #c9dbf2; color: #325885; }
+.project-icon, .section-icon { display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); color: var(--ink); font-size: 1.1rem; }
+.project-artwork { display: block; flex: none; width: 48px; max-width: 48%; height: auto; aspect-ratio: 1024 / 500; object-fit: cover; filter: grayscale(1); border: var(--border); border-radius: 6px; background: var(--ink); }
+.status { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 3px 7px; background: var(--paper); color: var(--muted); font-size: .69rem; font-weight: 700; white-space: nowrap; }
 .sheet-fields { margin: 0; }
 .sheet-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 4px; align-items: center; }
 .sheet-field-value { display: contents; }
@@ -48,9 +43,9 @@
 .sheet-links dd { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .field-actions { display: flex; gap: 4px; flex: none; }
 .field-actions-compact { grid-column: 2; grid-row: 1; }
-.field-actions .icon-button, .game-options .icon-button { border-color: #d9d5c8; }
+.field-actions .icon-button, .game-options .icon-button { border-color: var(--line); }
 .field-actions-compact .icon-button, .game-options .icon-button { width: 27px; height: 27px; border-radius: 6px; font-size: .79rem; }
-.missing { color: #777263; }
+.missing { color: var(--muted); }
 .empty { padding: 34px 17px; text-align: center; }
 .empty > .icon { margin-bottom: 8px; font-size: 2.2rem; }
 .empty h2 { font-size: 1.32rem; }

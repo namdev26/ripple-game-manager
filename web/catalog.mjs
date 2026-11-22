@@ -2,8 +2,10 @@ export const statuses = {
   active: 'Đang làm', testing: 'Đang test', planning: 'Lên kế hoạch', released: 'Đã phát hành', paused: 'Tạm dừng'
 };
 
-export const colors = { mint: 'Xanh lá', lavender: 'Tím', peach: 'Cam đào', blue: 'Xanh dương', yellow: 'Vàng' };
-export const covers = { mint: 'cat', lavender: 'spiral', peach: 'cooking-pot', blue: 'puzzle-piece', yellow: 'game-controller' };
+export const projectIcons = {
+  yellow: ['Tay cầm', 'game-controller'], mint: ['Mèo', 'cat'], lavender: ['Xoắn ốc', 'spiral'],
+  peach: ['Nồi nấu ăn', 'cooking-pot'], blue: ['Mảnh ghép', 'puzzle-piece']
+};
 export const artworks = {
   'snake-out': { title: 'Snake Out: Escape Puzzle', src: '/assets/games/snake-out/feature.jpg' }
 };
