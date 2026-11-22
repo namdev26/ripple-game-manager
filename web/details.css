@@ -1,0 +1,77 @@
+.back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 17px; color: var(--muted); font-size: .875rem; font-weight: 700; }
+.back-link:hover { color: var(--ink); text-decoration: underline; }
+.detail-identity { display: flex; gap: 15px; align-items: center; min-width: 0; }
+.detail-identity > div { min-width: 0; }
+.detail-identity .project-icon { width: 63px; height: 63px; font-size: 1.9rem; }
+.detail-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 13px; }
+.detail-title h1 { overflow-wrap: anywhere; }
+.detail-identity p { overflow-wrap: anywhere; white-space: pre-wrap; }
+.tabs { display: flex; gap: 7px; flex-wrap: wrap; border-bottom: 1px solid #d9d5c8; }
+.tabs a { display: block; padding: 9px 14px; border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0; font-size: .875rem; font-weight: 700; color: var(--muted); }
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current] { border-color: var(--ink); background: var(--yellow); color: var(--ink); }
+.detail-content { padding-top: 23px; }
+.info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.info-panel, .backup-panel { padding: 17px 18px; min-width: 0; }
+.info-panel h2, .backup-panel h2 { display: flex; align-items: center; gap: 8px; font-size: 1.16rem; letter-spacing: -.035em; }
+.info-panel dl { margin: 12px 0 0; }
+.field-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 0; border-top: 1px solid var(--rule); }
+.field-row > div:first-child { min-width: 0; }
+.field-row dt { color: var(--muted); font-size: .79rem; font-weight: 700; }
+.field-row dd { margin: 4px 0 0; overflow-wrap: anywhere; font: 400 .88rem/1.4 'Workspace', sans-serif; }
+.row-actions { display: flex; flex: none; gap: 5px; }
+.row-actions .icon-button { border-color: #d9d5c8; }
+.info-panel > p, .backup-panel p { margin-top: 11px; font-size: .875rem; color: var(--muted); }
+.info-panel > .button, .backup-panel > .button { margin-top: 13px; }
+.backup-panel h2 { margin-top: 13px; }
+.record { display: flex; min-width: 0; align-items: center; gap: 11px; padding: 12px 15px; }
+.record + .record { border-top: 1px solid var(--rule); }
+.record-copy { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.record-copy strong, .record-copy small { display: block; }
+.record-copy strong { font-size: .91rem; }
+.record-copy small, .record time { color: var(--muted); font-size: .76rem; }
+.record-copy small a:hover { text-decoration: underline; }
+.record time { display: inline-flex; gap: 4px; align-items: center; flex: none; }
+.record .avatar { width: 36px; height: 36px; font-size: .68rem; }
+.task-toggle { display: grid; place-items: center; flex: none; width: 25px; height: 25px; padding: 0; border: var(--border); border-radius: 6px; background: var(--paper); }
+.task-toggle:hover, .task-toggle[aria-pressed='true'] { background: var(--mint); }
+.task-done .record-copy strong { color: var(--muted); text-decoration: line-through; }
+.member-projects { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; max-width: 56%; }
+.member-projects a { padding: 4px 7px; border: 1px solid #d9d5c8; border-radius: 6px; color: var(--muted); overflow-wrap: anywhere; font-size: .75rem; font-weight: 700; }
+.member-projects a:hover { background: var(--yellow); color: var(--ink); }
+dialog { width: min(670px, calc(100% - 26px)); max-width: none; max-height: 92dvh; padding: 0; overflow: hidden; color: var(--ink); border: var(--border); border-radius: 15px; background: var(--paper); box-shadow: 5px 5px var(--ink); }
+dialog::backdrop { background: #1c1c17a3; }
+dialog fieldset { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: 91dvh; min-width: 0; margin: 0; padding: 0; border: 0; }
+.editor-header, .editor-footer { display: flex; align-items: center; gap: 9px; padding: 12px 19px; }
+.editor-header { justify-content: space-between; border-bottom: 1px solid var(--rule); }
+.editor-header h2 { font-size: 1.42rem; }
+.editor-footer { border-top: 1px solid var(--rule); }
+.editor-footer > span { flex: 1; }
+.editor-body { overflow: auto; min-height: 0; padding: 16px 19px 20px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.form-field { display: grid; gap: 4px; min-width: 0; font-size: .85rem; font-weight: 700; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; min-width: 0; padding: 8px 9px; border: 1px solid #d4d0c3; border-radius: 7px; background: var(--paper); color: var(--ink); font-size: 1rem; font-weight: 400; }
+.form-field select { padding-right: 27px; }
+.form-field textarea { resize: vertical; }
+.form-field.full { grid-column: 1 / -1; }
+.form-group { margin-top: 12px; padding: 8px 10px; border: 1px solid #dedacf; border-radius: 8px; }
+.form-group summary { display: flex; align-items: center; gap: 7px; list-style: none; cursor: pointer; font-size: .88rem; font-weight: 700; }
+.form-group summary::-webkit-details-marker { display: none; }
+.form-group summary .icon:last-child { margin-left: auto; }
+.form-group[open] summary .icon:last-child { transform: rotate(180deg); }
+.form-group > .form-grid, .form-group > .custom-fields, .form-group > .button { margin-top: 11px; }
+.custom-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto; align-items: end; gap: 7px; margin: 7px 0; }
+.custom-row .button { align-self: end; margin-bottom: 2px; }
+.form-error { margin-top: 11px; color: #9a2d31; font-size: .875rem; font-weight: 700; }
+.checkbox-field { display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+@media (max-width: 660px) { .info-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) {
+  .detail-heading { align-items: start; flex-direction: column; }
+  .detail-identity .project-icon { width: 48px; height: 48px; }
+  .detail-title h1 { font-size: 2rem; }
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+  .record { padding: 10px 8px; gap: 7px; }
+  .record time .icon { display: none; }
+  .editor-body { padding: 12px; }
+  .editor-header, .editor-footer { padding: 10px 12px; }
+}

@@ -1,0 +1,7 @@
+data/
+node_modules/
+*.jks
+*.keystore
+*.p12
+*.pfx
+firebase-adminsdk*.json

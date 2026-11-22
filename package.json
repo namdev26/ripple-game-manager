@@ -1,0 +1,8 @@
+{
+  "name": "ripple-workspace",
+  "private": true,
+  "scripts": {
+    "start": "node server/main.mjs",
+    "test": "node --test"
+  }
+}
